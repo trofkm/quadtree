@@ -1,7 +1,7 @@
 // represents the simple point on the screen
-class Point{
+class Point {
 
-    constructor(x, y){
+    constructor(x, y) {
         this.x = x;
         this.y = y;
     }

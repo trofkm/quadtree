@@ -1,5 +1,5 @@
 let qt;
-let boundary 
+let boundary
 let spawnMultiplePoints = true;
 let drawPoints = false;
 let showPoints = true;
@@ -51,7 +51,7 @@ function setupLayout() {
       btnToggleShowPoints.style('background', disCol);
     }
   });
-  
+
 
   let btnToggleSelection = createButton("Toggle selection");
   btnToggleSelection.style('background', disCol);
@@ -65,7 +65,7 @@ function setupLayout() {
   });
 
   let btnClear = createButton("Clear");
-  btnClear.mousePressed(()=>{
+  btnClear.mousePressed(() => {
     qt = new QuadTree(boundary, treeCapacity);
   })
 }
