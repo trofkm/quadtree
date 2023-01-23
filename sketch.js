@@ -93,7 +93,6 @@ function mouseClicked() {
     let m = new Point(mouseX, mouseY);
     qt.insert(m);
   }
-  console.log(qt);
 }
 
 function draw() {
