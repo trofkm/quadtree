@@ -4,7 +4,7 @@ let spawnMultiplePoints = true;
 let drawPoints = false;
 let showPoints = true;
 let selectPoints = false;
-let treeCapacity = 10;
+let treeCapacity = 4;
 
 function setup() {
   createCanvas(1000, 1000);
@@ -15,7 +15,7 @@ function setup() {
 
   setupLayout();
 }
-
+// todo: move to separate widget manager 
 function setupLayout() {
   let btnToggleMultipleSpawn = createButton("Spawn multiple points");
   let enCol = color(25, 23, 200, 50);
@@ -55,7 +55,7 @@ function setupLayout() {
 
   let btnToggleSelection = createButton("Toggle selection");
   btnToggleSelection.style('background', disCol);
-  btnToggleShowPoints.mousePressed(() => {
+  btnToggleSelection.mousePressed(() => {
     selectPoints = !selectPoints;
     if (selectPoints) {
       btnToggleSelection.style('background', enCol);
@@ -67,7 +67,19 @@ function setupLayout() {
   let btnClear = createButton("Clear");
   btnClear.mousePressed(() => {
     qt = new QuadTree(boundary, treeCapacity);
-  })
+  });
+
+  let inputTreeCapacity = createInput();
+  let btnInputSubmit = createButton("Submit");
+  btnInputSubmit.position(inputTreeCapacity.x + inputTreeCapacity.width, inputTreeCapacity.y);
+  btnInputSubmit.mousePressed(() => {
+    treeCapacity = Number(inputTreeCapacity.value());
+  });
+  inputTreeCapacity.value(treeCapacity);
+
+
+  textSize(width / 10);
+
 }
 
 function mouseClicked() {
@@ -90,4 +102,22 @@ function draw() {
   }
   background(0);
   qt.show(showPoints);
+  drawSelection(100, 50);
+}
+
+function drawSelection(width, height) {
+  if (selectPoints) {
+    stroke(0, 255, 0, 255);
+    strokeWeight(2);
+    noFill();
+    rectMode(CENTER)
+    rect(mouseX, mouseY, width * 2, height * 2)
+    let found = qt.query(new Rectangle(mouseX, mouseY, width, height))
+    for (let p of found) {
+      stroke(0, 255, 0, 255);
+      strokeWeight(5);
+      point(p.x, p.y)
+    }
+    text(found.length, 100, 100)
+  }
 }
