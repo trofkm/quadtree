@@ -5,19 +5,24 @@ class QuadTree {
         // each section of the quadtree had this capacity
         this.capacity = capacity;
         this.divided = false;
+        // Used to check if the distance between the two nearest points is greater than
+        // this value
+        this.minDistance = 2;
     }
+
+
 
     insert(point) {
         if (!this.boundares.in(point))
             return false;
 
         if (!this.divided && this.points.length < this.capacity) {
-            this.points.push(point);
+            if (this.isNotNear(point))
+                this.points.push(point);
             return true;
         }
 
         if (!this.divided) {
-            // todo: split values in this array 
             this.subdivide();
         }
         if (this.divided) {
@@ -34,6 +39,17 @@ class QuadTree {
         return false;
     }
 
+    // this function returns false if the distance between input point and
+    // the nearest point is less than the parameter
+    isNotNear(point) {
+        let distance = (p1, p2) => {
+            return sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
+        };
+        for (let p of this.points) {
+            if (distance(p, point) < this.minDistance) return false;
+        }
+        return true;
+    }
 
     subdivide() {
         let x = this.boundares.x;
@@ -65,6 +81,7 @@ class QuadTree {
         this.divided = true;
     }
 
+
     show(drawPoints) {
         stroke(255);
         strokeWeight(1);
@@ -85,5 +102,30 @@ class QuadTree {
         }
     }
 
+    query(range) {
+        let found = [];
+        // return empty array
+        if (!this.boundares.intersects(range))
+            return found;
+
+        if (!this.divided) {
+            for (let p of this.points) {
+                if (range.in(p))
+                    found.push(p);
+            }
+            return found;
+        }
+
+        if (this.divided) {
+            found = found.concat(this.northwest.query(range));
+            found = found.concat(this.northeast.query(range));
+            found = found.concat(this.southwest.query(range));
+            found = found.concat(this.southeast.query(range));
+            return found;
+        }
+    }
+
 }
+
+
 
