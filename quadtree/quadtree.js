@@ -1,6 +1,6 @@
 class QuadTree {
-    constructor(boundares, capacity) {
-        this.boundares = boundares
+    constructor(boundaries, capacity) {
+        this.boundaries = boundaries
         this.points = [];
         // each section of the quadtree had this capacity
         this.capacity = capacity;
@@ -13,7 +13,7 @@ class QuadTree {
 
 
     insert(point) {
-        if (!this.boundares.in(point))
+        if (!this.boundaries.in(point))
             return false;
 
         if (!this.divided && this.points.length < this.capacity) {
@@ -52,10 +52,10 @@ class QuadTree {
     }
 
     subdivide() {
-        let x = this.boundares.x;
-        let y = this.boundares.y;
-        let w = this.boundares.width;
-        let h = this.boundares.height;
+        let x = this.boundaries.x;
+        let y = this.boundaries.y;
+        let w = this.boundaries.width;
+        let h = this.boundaries.height;
 
         // todo: here is an issue with low capacity, caused by maximum call stack size exceeded
         // Can be solved by capacity > then 4 or by increasing the capacity of the nested qtrees by one
@@ -87,7 +87,7 @@ class QuadTree {
         strokeWeight(1);
         noFill();
         rectMode(CENTER)
-        rect(this.boundares.x, this.boundares.y, this.boundares.width * 2, this.boundares.height * 2);
+        rect(this.boundaries.x, this.boundaries.y, this.boundaries.width * 2, this.boundaries.height * 2);
         if (this.divided) {
             this.northwest.show(drawPoints);
             this.northeast.show(drawPoints);
@@ -105,7 +105,7 @@ class QuadTree {
     query(range) {
         let found = [];
         // return empty array
-        if (!this.boundares.intersects(range))
+        if (!this.boundaries.intersects(range))
             return found;
 
         if (!this.divided) {
