@@ -7,7 +7,7 @@ let selectPoints = false;
 let treeCapacity = 4;
 
 function setup() {
-  createCanvas(1000, 1000);
+  createCanvas(900, 900);
 
   boundary = new Rectangle(width / 2, height / 2, width / 2, height / 2);
   qt = new QuadTree(boundary, treeCapacity);
